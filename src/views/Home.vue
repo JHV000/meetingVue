@@ -12,8 +12,8 @@
               >更多</el-button
             >
           </div>
-          <div v-for="o in 4" :key="o" class="text item">
-            {{ "列表内容 " + o }}
+          <div v-for="(item,index) in notices" :key="index" class="text item">
+            {{ item.content }}
           </div>
         </el-card>
       </div>
@@ -55,11 +55,17 @@ export default {
   },
   data() {
     return {
+      notices:[],
       isLogin: false,
       username: "",
     };
   },
-
+mounted(){
+this.$axios.get("/notices/getallnotices").then((res)=>{
+  this.notices = res
+  console.log(res);
+})
+},
   methods: {
     jump(address) {
       if (this.checkLogin()) {
@@ -89,19 +95,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.el-header {
-  background-color: #409eff;
-  color: #ffffff;
-  span {
-    float: right;
-    line-height: 60px;
-    padding: 0 5px;
-  }
-  span:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-}
+
 .el-main {
   .el-divider {
     margin: 50px 0px;

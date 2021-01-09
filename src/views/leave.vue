@@ -5,8 +5,10 @@
 
     <div class="leave-list">
       <el-card v-for="(item,index) in leaveList" :key="index">
-        <div slot="header"></div>
-        <div>{{item.id}}</div>
+        <div slot="header">会议详情</div>
+        <div>会议名称： {{item.name}}</div>
+        <div>会议内容：  {{item.reason}}</div>
+        <el-button type="primary">请假</el-button>
         
       </el-card>
     </div>
@@ -42,5 +44,11 @@ export default {
 };
 </script>
 <style lang="scss">
-
+.leave-list {
+  display: flex;
+  .el-card {
+    width: 20%;
+    margin: 20px;
+  }
+}
 </style>

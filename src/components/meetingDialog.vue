@@ -35,17 +35,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="职位：">
-          <el-select v-model="form.position_id" placeholder="请选择">
-            <el-option
-              v-for="item in positions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
       </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -64,7 +53,6 @@ export default {
   data() {
     return {
       options:[],
-      positions:[],
       pw1: "",
       //表单数据
       form: {
@@ -80,10 +68,6 @@ export default {
     this.$axios.get("/departments/getalldeps").then((res)=>{
       
       this.options = res.map(o=>{return{value:o.id,label:o.name}});
-      // console.log(res);
-    })
-    this.$axios.get("/positions/getallposition").then((res)=>{
-      this.positions = res.map(o=>{return{value:o.id,label:o.name}});
       // console.log(res);
     })
 

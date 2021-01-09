@@ -48,7 +48,14 @@ export default {
             this.$message.success("登录成功！");
             window.sessionStorage.setItem("cat_token", res);
             window.sessionStorage.setItem("cat_username", this.form.username);
-            
+            if(this.username=="admin"){
+              this.$router.push({
+                path:"manage",
+                params:{
+                  username:this.username
+                }
+              })
+            }
           } else {
             this.$message.error("用户不存在，请先注册");
           }

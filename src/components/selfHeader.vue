@@ -1,23 +1,38 @@
 <template>
+<div>
   <el-header>
-    <div v-if="!isLogin">
-      <span @click="showRegister"> 注册 </span>
-      <span> / </span>
-      <span @click="showLogin"> 登录 </span>
-    </div>
-    <div v-if="isLogin">
-      <span> 退出 </span>
-      <span> {{ username }}</span>
-    </div>
-    <el-dialog  width="30%" title="登录" :visible.sync="loginShow" :before-close="close" center>
-    <login-dialog></login-dialog>
+    
+      <div v-if="!isLogin">
+        <span @click="showRegister"> 注册 </span>
+        <span> / </span>
+        <span @click="showLogin"> 登录 </span>
+      </div>
+      <div v-if="isLogin">
+        <span @click="signOut"> 退出 </span>
+        <span> {{ username }}</span>
+      </div>
+    
+    </el-header>
+    <el-dialog
+      width="30%"
+      title="登录"
+      :visible.sync="loginShow"
+      :before-close="close"
+      center
+    >
+      <login-dialog></login-dialog>
     </el-dialog>
-    <el-dialog  width="30%" title="注册" :visible.sync="registerShow" :before-close="close" center>
-    <register-dialog></register-dialog>
+    <el-dialog
+      width="30%"
+      title="注册"
+      :visible.sync="registerShow"
+      :before-close="close"
+      center
+    >
+      <register-dialog></register-dialog>
     </el-dialog>
-  </el-header>
-
   
+  </div>
 </template>
 <script>
 import loginDialog from "../components/loginDialog.vue";
@@ -57,6 +72,12 @@ export default {
     showRegister() {
       this.registerShow = true;
     },
+    signOut() {
+      window.sessionStorage.clear();
+      this.$router.push({
+        path: "/",
+      });
+    },
     close() {
       this.loginShow = false;
       this.registerShow = false;
@@ -64,3 +85,18 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.el-header {
+  background-color: #409eff;
+  color: #ffffff;
+  span {
+    float: right;
+    line-height: 60px;
+    padding: 0 5px;
+  }
+  span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+</style>

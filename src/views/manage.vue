@@ -43,7 +43,7 @@
               <el-dropdown-item>删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>王小虎</span>
+          <span>{{username}}</span>
         </el-header>
 
         <el-main>
@@ -62,10 +62,11 @@
 </template>
 <script>
 export default {
+  name:'manage',
   data() {
     const item = {
       date: "2016-05-02",
-      name: "王小虎",
+      username:this.$route.query.username,
       address: "上海市普陀区金沙江路 1518 弄",
     };
     return {

@@ -9,7 +9,7 @@
           <el-input
             type="password"
             class="search-input"
-            v-model="form.pw"
+            v-model="form.password"
             show-password
           />
         </el-form-item>
@@ -17,7 +17,7 @@
           <el-input
             type="password"
             class="search-input"
-            v-model="form.pw1"
+            v-model="pw1"
             show-password
           />
         </el-form-item>
@@ -25,7 +25,7 @@
           <el-input type="password" class="search-input" v-model="form.phone" />
         </el-form-item>
         <el-form-item label="部门：">
-          <el-select v-model="form.department" placeholder="请选择">
+          <el-select v-model="form.department_id" placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -38,7 +38,9 @@
       </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="medium" @click="register(form)">注册</el-button>
+      <el-button type="primary" size="medium" @click="register(form)"
+        >注册</el-button
+      >
       <el-button plain size="medium" @click="reset(form)">重置</el-button>
     </div>
   </div>
@@ -50,52 +52,47 @@ export default {
 
   data() {
     return {
-      options: [
-        {
-          value: "1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      options:[],
+      pw1: "",
       //表单数据
       form: {
         username: "",
-        pw: "",
-        pw1: "",
+        password: "",
         phone: "",
-        department: "",
+        department_id: "",
+        position_id:""
       },
     };
   },
-  mounted: function () {},
+  mounted: function () {
+    this.$axios.get("/departments/getalldeps").then((res)=>{
+      
+      this.options = res.map(o=>{return{value:o.id,label:o.name}});
+      // console.log(res);
+    })
+
+  },
   methods: {
     register(form) {
-      console.log(form);
+     const that = this
+      this.$axios.post("/user/adduser", this.form).then((res) => {
+        if(res!=0){
+          this.$message.success("注册成功！快去登录吧")
+      
+        }
+      });
+      // console.log(form);
     },
     reset(form) {
-      const restform =  {
+      const restform = {
         username: "",
         pw: "",
         pw1: "",
         phone: "",
         department: "",
-      }
-      this.form = Object.assign({},restform)
+      };
+      this.form = Object.assign({}, restform);
+      this.pw1 = ""
     },
   },
 };

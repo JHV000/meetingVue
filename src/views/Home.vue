@@ -1,10 +1,6 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee">
-    <el-header>
-      <span  @click="showRegister"> 注册 </span>
-      <span> / </span>
-      <span @click="showLogin"> 登录 </span>
-    </el-header>
+  <el-container style="height: 800px; border: 1px solid #eee">
+   <self-header></self-header>
     <el-main>
 
       <!-- 通知 -->
@@ -21,47 +17,73 @@
           </div>
         </el-card>
       </div>
-
+    <el-divider>特色功能</el-divider>
       <!-- 功能 -->
-
+      <div class="fuc-card">
+        <a>
+        <div class="card" @click="jump('/meeting')">
+           <p>会议室预约</p>
+          <img src="../assets/meeting.png" class="image" alt="">
+        </div>
+        </a>
+        <a>
+        <div class="card" @click="jump('/leave')">
+           <p>会议请假</p>
+          <img src="../assets/leave.png" class="image" alt="">
+         
+        </div>
+        </a>
+        <router-link to="/">
+        <div class="card">
+           <p>尽情期待</p>
+          <img src="../assets/2021.png" class="image" alt="">
+        </div>
+</router-link>
+      </div>
     </el-main>
     <el-footer></el-footer>
-    <el-dialog  width="30%" title="登录" :visible.sync="loginShow" :before-close="close" center>
-    <login-dialog></login-dialog>
-    </el-dialog>
-    <el-dialog  width="30%" title="注册" :visible.sync="registerShow" :before-close="close" center>
-    <register-dialog></register-dialog>
-    </el-dialog>
+    
   </el-container>
 </template>
 
 <script>
-import loginDialog from "../components/loginDialog.vue";
-import registerDialog from '../components/registerDialog.vue';
+import selfHeader from "../components/selfHeader.vue";
 export default {
   name: "Home",
   components: {
-    loginDialog,
-    registerDialog,
-    
+    selfHeader,
   },
   data() {
     return {
-      loginShow: false,
-      registerShow:false
+      isLogin: false,
+      username: "",
     };
   },
+
   methods: {
-    showLogin() {
-      this.loginShow = true;
-      
+    jump(address) {
+      if (this.checkLogin()) {
+        this.$router.push({
+          path: address,
+        });
+      }
     },
-    showRegister(){
-this.registerShow = true
-    },
-    close() {
-      this.loginShow = false
-      this.registerShow = false
+    checkLogin() {
+      const that = this;
+      // 如果用户没有登录，则打开登录界面
+      if (window.sessionStorage) {
+        const data = window.sessionStorage["cat_token"];
+        if (data) {
+          return 1;
+        } else {
+          this.$message.warning("请先登录");
+          window.setTimeout(() => {
+            this.showLogin();
+          }, 1000);
+
+          return 0;
+        }
+      }
     },
   },
 };
@@ -81,6 +103,40 @@ this.registerShow = true
   }
 }
 .el-main {
+  .el-divider {
+    margin: 50px 0px;
+  }
+  .fuc-card {
+    display: flex;
+    justify-content: space-around;
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+    a:hover {
+      box-shadow: 1px 1px 10px 10px #e1e1e1;
+    }
+    p {
+      margin: 0;
+      margin-top: 10px;
+    }
+    .card {
+      width: 300px;
+      height: 270px;
+      text-align: center;
+      border: 2px solid #e1e1e1;
+      border-radius: 10px;
+      box-shadow: 5px 6px 5px 0px #e1e1e1;
+      .image {
+        width: 90%;
+        height: 90%;
+      }
+      .card:hover {
+        color: red;
+        box-shadow: 10px 5px 0px 5px;
+      }
+    }
+  }
   .notice {
     .text {
       font-size: 14px;
